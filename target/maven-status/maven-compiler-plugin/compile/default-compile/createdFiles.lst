@@ -1,0 +1,11 @@
+org/cycledm/itemswitchsound/manager/MessageManager.class
+org/cycledm/itemswitchsound/command/AdminCommand.class
+org/cycledm/itemswitchsound/Main.class
+org/cycledm/itemswitchsound/command/BasicCommand.class
+org/cycledm/itemswitchsound/manager/FileManager.class
+org/cycledm/itemswitchsound/command/AdminCommand$1.class
+org/cycledm/itemswitchsound/command/TableCompleter.class
+org/cycledm/itemswitchsound/listener/PlayerListener.class
+org/cycledm/itemswitchsound/manager/ConfigManager.class
+org/cycledm/itemswitchsound/manager/PlayerManager.class
+org/cycledm/itemswitchsound/listener/PlayerListener$1.class
