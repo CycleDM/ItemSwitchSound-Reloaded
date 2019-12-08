@@ -1,0 +1,25 @@
+name: ItemSwitchSound
+version: 1.0.2
+main: org.cycledm.itemswitchsound.Main
+api-version: 1.13
+prefix: ItemSwitchSound
+authors: [CycleDM]
+description: Play sound when player swicth item.
+website: http://blog.cycledm.org
+commands:
+  iss:
+    description: ItemSwitchSound basic commands
+    usage: "§cIncorrect usage. §6Usage: /iss [toggle(t)|set|reset] (args)"
+    permission: itemswitchsound.use
+    aliases:
+      - iswitch
+  issadmin:
+    description: ItemSwitchSound admin commands
+    usage: "§cIncorrect usage. §6Usage: /issadmin [set|reset-all|reload|debug] (args)"
+    permission: itemswitchsound.admin
+permissions:
+  itemswitchsound.use:
+    description: ItemSwitchSound basic permission
+    default: true
+  itemswitchsound.admin:
+    default: op
