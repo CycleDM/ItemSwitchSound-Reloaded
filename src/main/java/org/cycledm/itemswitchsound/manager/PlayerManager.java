@@ -72,7 +72,7 @@ public class PlayerManager {
         if (playerConfig.getBoolean("reset")) {
             playerFile.delete();
             // 向该玩家发送消息
-            if (ignoreResetMessage) {
+            if (!ignoreResetMessage) {
                 player.sendMessage(MessageManager.getPrefix() + MessageManager.getString("changed.reset"));
             }
         }
