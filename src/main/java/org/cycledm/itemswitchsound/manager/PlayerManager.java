@@ -78,7 +78,7 @@ public class PlayerManager {
         }
         // 创建玩家的配置文件
         if (!getPlayerFile(player).exists()) {
-            FileManager.saveTargetConfigurationFile(playerFile, playerConfig);
+            FileManager.saveTargetConfigFile(playerFile, playerConfig);
             // 填充数据
             playerConfig.set("toggle", "on");
             playerConfig.set("sound", Main.getInstance().getConfig().getString("sound"));
@@ -91,7 +91,7 @@ public class PlayerManager {
             }
             playerConfig.set("reset", false);
             // 保存配置文件
-            FileManager.saveTargetConfigurationFile(playerFile, playerConfig);
+            FileManager.saveTargetConfigFile(playerFile, playerConfig);
         }
         
         // 玩家配置文件已存在，加载玩家配置，写入哈希表
@@ -125,7 +125,7 @@ public class PlayerManager {
             // 将reset值设置为true，只在玩家配置存在时执行
             if (playerFile.exists()) {
                 playerConfig.set("reset", true);
-                FileManager.saveTargetConfigurationFile(playerFile, playerConfig);
+                FileManager.saveTargetConfigFile(playerFile, playerConfig);
             }
             
             // 如果此时玩家在线，则立刻开始重载操作

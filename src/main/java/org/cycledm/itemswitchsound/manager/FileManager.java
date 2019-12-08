@@ -1,7 +1,9 @@
 package org.cycledm.itemswitchsound.manager;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.FileUtil;
 import org.cycledm.itemswitchsound.Main;
 
@@ -94,13 +96,16 @@ public class FileManager {
     /**
      * 用于保存指定的配置文件，失败时返回日志
      */
-    public static void saveTargetConfigurationFile(File file, FileConfiguration configuration) {
-        try {
-            configuration.save(file);
-        } catch (IOException e) {
-            e.printStackTrace();
-            // send error message
-            System.out.println(ChatColor.DARK_RED + "Error occurred while saving player data!");
-        }
+    public static void saveTargetConfigFile(File targetFile, FileConfiguration targetConfiguration) {
+        // v1.0.3添加: 保存文件操作 改为异步进行
+        Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () ->{
+            try {
+                targetConfiguration.save(targetFile);
+            } catch (IOException e) {
+                e.printStackTrace();
+                // send error message
+                System.out.println(ChatColor.DARK_RED + "Error occurred while saving player data!");
+            }
+        });
     }
 }

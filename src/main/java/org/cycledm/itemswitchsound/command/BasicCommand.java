@@ -58,7 +58,7 @@ public class BasicCommand implements CommandExecutor {
             }
             playerConfig.set("toggle", temp);
             PlayerManager.toggle.put(p, temp);
-            FileManager.saveTargetConfigurationFile(playerFile, playerConfig);
+            FileManager.saveTargetConfigFile(playerFile, playerConfig);
             if ("on".equals(temp)) {
                 p.sendMessage(MessageManager.getPrefix() + MessageManager.getString("toggle.enabled"));
             } else {
@@ -68,7 +68,7 @@ public class BasicCommand implements CommandExecutor {
         }
         if (args.length == 1 && "reset".equalsIgnoreCase(args[0])) {
             playerConfig.set("reset", true);
-            FileManager.saveTargetConfigurationFile(playerFile, playerConfig);
+            FileManager.saveTargetConfigFile(playerFile, playerConfig);
             PlayerManager.loadPlayerData(p, true);
             p.sendMessage(MessageManager.getPrefix() + MessageManager.getString("reset"));
             return true;
@@ -82,7 +82,7 @@ public class BasicCommand implements CommandExecutor {
             }
             playerConfig.set("sound", sound);
             PlayerManager.sound.put(p, sound);
-            FileManager.saveTargetConfigurationFile(playerFile, playerConfig);
+            FileManager.saveTargetConfigFile(playerFile, playerConfig);
             p.sendMessage(MessageManager.getPrefix() + MessageManager.getString("changed.self"));
             return true;
         }
@@ -94,7 +94,7 @@ public class BasicCommand implements CommandExecutor {
             }
             playerConfig.set("volume", volume);
             PlayerManager.volume.put(p, volume);
-            FileManager.saveTargetConfigurationFile(playerFile, playerConfig);
+            FileManager.saveTargetConfigFile(playerFile, playerConfig);
             p.sendMessage(MessageManager.getPrefix() + MessageManager.getString("changed.self"));
             return true;
         }

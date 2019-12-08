@@ -156,7 +156,7 @@ public class AdminCommand implements CommandExecutor {
             }
             
             // 保存
-            FileManager.saveTargetConfigurationFile(playerFile, playerConfig);
+            FileManager.saveTargetConfigFile(playerFile, playerConfig);
             // 发送消息
             if (sender.getName().equals(targetPlayer.getName())) {
                 // 目标如果是自己，发送以下消息
