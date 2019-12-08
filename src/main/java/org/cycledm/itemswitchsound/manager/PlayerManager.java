@@ -65,14 +65,16 @@ public class PlayerManager {
     /**
      * 加载指定玩家的数据
      */
-    public static void loadPlayerData(Player player) {
+    public static void loadPlayerData(Player player, Boolean ignoreResetMessage) {
         File playerFile = getPlayerFile(player);
         FileConfiguration playerConfig = YamlConfiguration.loadConfiguration(playerFile);
         // 如果玩家配置中reset为true，先删除玩家的文件
         if (playerConfig.getBoolean("reset")) {
             playerFile.delete();
             // 向该玩家发送消息
-            player.sendMessage(MessageManager.getPrefix() + MessageManager.getString("changed.reset"));
+            if (ignoreResetMessage) {
+                player.sendMessage(MessageManager.getPrefix() + MessageManager.getString("changed.reset"));
+            }
         }
         // 创建玩家的配置文件
         if (!getPlayerFile(player).exists()) {
@@ -128,7 +130,7 @@ public class PlayerManager {
             
             // 如果此时玩家在线，则立刻开始重载操作
             if (player.isOnline()) {
-                loadPlayerData(player.getPlayer());
+                loadPlayerData(player.getPlayer(), false);
             }// 否则，不进行任何操作即可（下一次登录时会自动重载）
         }
     }

@@ -171,7 +171,7 @@ public final class Main extends JavaPlugin {
             getLogger().info("Checking online players...");
             for (Player p : Bukkit.getOnlinePlayers()) {
                 getLogger().info("Refreshing player " + p.getName() + "'s data...");
-                PlayerManager.loadPlayerData(p);
+                PlayerManager.loadPlayerData(p, false);
             }
         });
     }

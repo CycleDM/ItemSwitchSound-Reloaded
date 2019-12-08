@@ -27,7 +27,7 @@ public class PlayerListener implements Listener {
             
             @Override
             public void run() {
-                PlayerManager.loadPlayerData(p);
+                PlayerManager.loadPlayerData(p, false);
             }
         }.runTaskLater(Main.getInstance(), delay);
     }

@@ -69,7 +69,7 @@ public class BasicCommand implements CommandExecutor {
         if (args.length == 1 && "reset".equalsIgnoreCase(args[0])) {
             playerConfig.set("reset", true);
             FileManager.saveTargetConfigurationFile(playerFile, playerConfig);
-            PlayerManager.loadPlayerData(p);
+            PlayerManager.loadPlayerData(p, true);
             p.sendMessage(MessageManager.getPrefix() + MessageManager.getString("reset"));
             return true;
         }
