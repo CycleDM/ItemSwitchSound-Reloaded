@@ -18,6 +18,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+import static org.cycledm.itemswitchsound.Main.*;
+
+
 /**
  * @author CycleDM
  */
@@ -38,24 +41,25 @@ public class AdminCommand implements CommandExecutor {
         isConfirmAllowed.putIfAbsent(sender, false);
         confirmTaskId.putIfAbsent(sender, null);
         
-        if (args.length == 1 && "reload".equalsIgnoreCase(args[0])) {
+        if (args.length == 1 && RELOAD_COMMAND.equalsIgnoreCase(args[0])) {
             Main.getInstance().reload(sender);
             return true;
         }
-        if (args.length == 1 && "debug".equalsIgnoreCase(args[0])) {
+        if (args.length == 1 && DEBUG_COMMAND.equalsIgnoreCase(args[0])) {
             boolean isDebugMode = Main.getInstance().getConfig().getBoolean("debug");
             if (isDebugMode) {
                 Main.getInstance().getConfig().set("debug", false);
                 sender.sendMessage(MessageManager.getPrefix() + MessageManager.getString("debug.disabled"));
                 Main.getInstance().saveConfig();
-            } else {
+            }
+            else {
                 Main.getInstance().getConfig().set("debug", true);
                 sender.sendMessage(MessageManager.getPrefix() + MessageManager.getString("debug.enabled"));
                 Main.getInstance().saveConfig();
             }
             return true;
         }
-        if (args.length == 1 && "reset-all".equalsIgnoreCase(args[0])) {
+        if (args.length == 1 && RESET_ALL_COMMAND.equalsIgnoreCase(args[0])) {
             
             // 确认操作倒计时任务
             int taskid = new BukkitRunnable() {
@@ -77,7 +81,7 @@ public class AdminCommand implements CommandExecutor {
             sender.sendMessage(MessageManager.getPrefix() + MessageManager.getString("reset-all.confirm"));
             return true;
         }
-        if (args.length == 1 && "confirm".equalsIgnoreCase(args[0])) {
+        if (args.length == 1 && CONFIRM_COMMAND.equalsIgnoreCase(args[0])) {
             // 确认执行
             if (isConfirmAllowed.get(sender)) {
                 PlayerManager.resetAllPlayers();
@@ -94,7 +98,7 @@ public class AdminCommand implements CommandExecutor {
                 return true;
             }
         }
-        if (args.length >= 4 && "set".equalsIgnoreCase(args[0])) {
+        if (args.length >= 4 && SET_COMMAND.equalsIgnoreCase(args[0])) {
             // 检查目标玩家
             OfflinePlayer targetPlayer = Main.getInstance().checkPlayer(args[1]);
             // 是否在线
@@ -107,7 +111,7 @@ public class AdminCommand implements CommandExecutor {
                 return true;
             }
             
-            if ("sound".equalsIgnoreCase(args[2])) {
+            if (SOUND_ARG.equalsIgnoreCase(args[2])) {
                 String sound = Main.getInstance().checkSound(args[3]);
                 
                 if (sound == null) {
@@ -120,7 +124,8 @@ public class AdminCommand implements CommandExecutor {
                     PlayerManager.sound.put(targetPlayer.getPlayer(), args[3]);
                     Objects.requireNonNull(targetPlayer.getPlayer()).sendMessage(MessageManager.getPrefix() + MessageManager.getString("changed.op").replace("{0}", sender.getName()));
                 }
-            } else if ("volume".equalsIgnoreCase(args[2])) {
+            }
+            else if (VOLUME_ARG.equalsIgnoreCase(args[2])) {
                 Double volume = Main.getInstance().checkVolume(args[3]);
                 if (volume == null) {
                     sender.sendMessage(MessageManager.getPrefix() + MessageManager.getString("error.value_not_allowed"));
@@ -132,7 +137,8 @@ public class AdminCommand implements CommandExecutor {
                     PlayerManager.volume.put(targetPlayer.getPlayer(), volume);
                     Objects.requireNonNull(targetPlayer.getPlayer()).sendMessage(MessageManager.getPrefix() + MessageManager.getString("changed.op").replace("{0}", sender.getName()));
                 }
-            } else if (args.length == 5 && "pitch".equalsIgnoreCase(args[2])) {
+            }
+            else if (args.length == 5 && PITCH_ARG.equalsIgnoreCase(args[2])) {
                 String pitch = Main.getInstance().checkPitch(args[4]);
                 String slot = args[3];
                 if (Integer.parseInt(slot) < 1 || Integer.parseInt(slot) > 9) {
@@ -151,7 +157,8 @@ public class AdminCommand implements CommandExecutor {
                     PlayerManager.pitchName.put(targetPlayer.getUniqueId().toString() + ":slot" + i, pitch);
                     Objects.requireNonNull(targetPlayer.getPlayer()).sendMessage(MessageManager.getPrefix() + MessageManager.getString("changed.op").replace("{0}", sender.getName()));
                 }
-            } else {
+            }
+            else {
                 return false;
             }
             
@@ -161,7 +168,8 @@ public class AdminCommand implements CommandExecutor {
             if (sender.getName().equals(targetPlayer.getName())) {
                 // 目标如果是自己，发送以下消息
                 sender.sendMessage(MessageManager.getPrefix() + MessageManager.getString("changed.self"));
-            } else {
+            }
+            else {
                 // 目标如果不是自己，发送以下消息
                 sender.sendMessage(MessageManager.getPrefix() + MessageManager.getString("changed.other").replace("{0}", Objects.requireNonNull(targetPlayer.getPlayer()).getName()));
             }

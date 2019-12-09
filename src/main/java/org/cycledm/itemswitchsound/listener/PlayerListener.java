@@ -15,13 +15,11 @@ import org.cycledm.itemswitchsound.manager.PlayerManager;
  * @author CycleDM
  */
 public class PlayerListener implements Listener {
-    /**
-     * 加入事件
-     **/
+    /** 加入事件 */
     @EventHandler
     public void onPlayerLogin(PlayerJoinEvent e) {
         Player p = e.getPlayer();
-        int delay = 20;
+        int delay = 30;
         // 加载玩家配置之前，短暂的延迟(ticks)
         new BukkitRunnable() {
             
@@ -32,9 +30,7 @@ public class PlayerListener implements Listener {
         }.runTaskLater(Main.getInstance(), delay);
     }
     
-    /**
-     * 切换物品事件（主要事件）
-     */
+    /** 切换物品事件（主要事件） */
     @EventHandler
     public void onPlayerSwitchItem(PlayerItemHeldEvent e) {
         Player p = e.getPlayer();

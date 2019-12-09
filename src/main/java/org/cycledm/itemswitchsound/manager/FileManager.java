@@ -3,7 +3,6 @@ package org.cycledm.itemswitchsound.manager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.FileUtil;
 import org.cycledm.itemswitchsound.Main;
 
@@ -18,8 +17,8 @@ public class FileManager {
     private static File message = null;
     private static File config_old = null;
     private static File message_old = null;
-    private static File pitch_list = null;
     
+    /** 用于保存默认的文件 */
     public static void saveDefaultFile() {
         File tempPath;
         // pitch list file
@@ -27,9 +26,6 @@ public class FileManager {
             Main.getInstance().getLogger().info("Pitch list file doesn't exist, saving default list file...");
             Main.getInstance().saveResource("pitch_list.yml", true);
         }
-        // update
-        tempPath = Main.getInstance().getDataFolder();
-        pitch_list = new File(tempPath, "pitch_list.yml");
         // config file
         if (!ConfigManager.getConfigFile().exists()) {
             Main.getInstance().getLogger().info("Config file doesn't exist, saving default config...");
@@ -42,14 +38,16 @@ public class FileManager {
         
         // language file
         if (!MessageManager.getMessageFile().exists()) {
-            tempPath = new File(MessageManager.insidePath + Main.getInstance().getConfig().getString("language") + ".yml");
-            Main.getInstance().getLogger().info("Language file doesn't exist, saving " + Main.getInstance().getConfig().getString("language") + " language file...");
+            tempPath = new File(
+                    MessageManager.insidePath + Main.getInstance().getConfig().getString("language") + ".yml");
+            Main.getInstance().getLogger().info("Language file doesn't exist, saving "
+                    + Main.getInstance().getConfig().getString("language") + " language file...");
             Main.getInstance().saveResource(tempPath.getPath(), true);
         }
         // update
         tempPath = new File(Main.getInstance().getDataFolder() + File.separator + "lang" + File.separator);
-        message = new File( tempPath.getPath(), Main.getInstance().getConfig().getString("language") + ".yml");
-        message_old = new File( tempPath.getPath(), Main.getInstance().getConfig().getString("language") + "_old.yml");
+        message = new File(tempPath.getPath(), Main.getInstance().getConfig().getString("language") + ".yml");
+        message_old = new File(tempPath.getPath(), Main.getInstance().getConfig().getString("language") + "_old.yml");
         
         // player folder
         if (!PlayerManager.playerFolder.exists()) {
@@ -68,24 +66,26 @@ public class FileManager {
     }
     
     private static void doFileUpdate() {
-        //config
+        // config
         if (config_old.exists()) {
             boolean isDeleted = config_old.delete();
             if (isDeleted) {
                 FileUtil.copy(config, config_old);
             }
-        } else {
+        }
+        else {
             FileUtil.copy(config, config_old);
         }
         config.delete();
         
-        //message
+        // message
         if (message_old.exists()) {
             boolean isDeleted = message_old.delete();
             if (isDeleted) {
                 FileUtil.copy(message, message_old);
             }
-        } else {
+        }
+        else {
             FileUtil.copy(message, message_old);
         }
         message.delete();
@@ -98,7 +98,7 @@ public class FileManager {
      */
     public static void saveTargetConfigFile(File targetFile, FileConfiguration targetConfiguration) {
         // v1.0.3添加: 保存文件操作 改为异步进行
-        Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () ->{
+        Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () -> {
             try {
                 targetConfiguration.save(targetFile);
             } catch (IOException e) {

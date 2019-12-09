@@ -3,8 +3,6 @@ package org.cycledm.itemswitchsound.manager;
 import org.cycledm.itemswitchsound.Main;
 
 import java.io.File;
-import java.util.Objects;
-import java.util.Set;
 
 /**
  * @author CycleDM

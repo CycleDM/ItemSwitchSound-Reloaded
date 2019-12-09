@@ -24,7 +24,7 @@ debug:
   disabled: "&eDebug Mode switched &cOFF"
   # Player command: /iss info
   player-enabled: "&eInformation output switched &aON"
-  player-disabled: "&eInformation output switched &coFF"
+  player-disabled: "&eInformation output switched &cOFF"
   alias:
     sound: "&eSound"
     volume: "&eVolume"

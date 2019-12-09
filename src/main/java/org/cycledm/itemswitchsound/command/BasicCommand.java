@@ -14,6 +14,8 @@ import org.cycledm.itemswitchsound.manager.PlayerManager;
 import java.io.File;
 import java.util.Objects;
 
+import static org.cycledm.itemswitchsound.Main.*;
+
 /**
  * @author CycleDM
  */
@@ -35,7 +37,7 @@ public class BasicCommand implements CommandExecutor {
         if (args.length == 0) {
             return false;
         }
-        if (args.length == 1 && "info".equalsIgnoreCase(args[0])) {
+        if (args.length == 1 && INFO_COMMAND.equalsIgnoreCase(args[0])) {
             // 如果玩家是管理员，此时debug模式已开启，则跳过此设置
             if (p.hasPermission("itemswitchsound.admin") && Main.getInstance().getConfig().getBoolean("debug")) {
                 return true;
@@ -43,17 +45,19 @@ public class BasicCommand implements CommandExecutor {
             if (PlayerManager.sendInfo.get(p)) {
                 PlayerManager.sendInfo.put(p, false);
                 p.sendMessage(MessageManager.getPrefix() + MessageManager.getString("debug.player-disabled"));
-            } else {
+            }
+            else {
                 PlayerManager.sendInfo.put(p, true);
                 p.sendMessage(MessageManager.getPrefix() + MessageManager.getString("debug.player-enabled"));
             }
             return true;
         }
-        if (args.length == 1 && ("toggle".equalsIgnoreCase(args[0]) || "t".equalsIgnoreCase(args[0]))) {
+        if (args.length == 1 && (TOGGLE_COMMAND.equalsIgnoreCase(args[0]) || TOGGLE_SHORT_COMMAND.equalsIgnoreCase(args[0]))) {
             String temp;
             if (Objects.equals(playerConfig.getString("toggle"), "on")) {
                 temp = "off";
-            } else {
+            }
+            else {
                 temp = "on";
             }
             playerConfig.set("toggle", temp);
@@ -61,19 +65,20 @@ public class BasicCommand implements CommandExecutor {
             FileManager.saveTargetConfigFile(playerFile, playerConfig);
             if ("on".equals(temp)) {
                 p.sendMessage(MessageManager.getPrefix() + MessageManager.getString("toggle.enabled"));
-            } else {
+            }
+            else {
                 p.sendMessage(MessageManager.getPrefix() + MessageManager.getString("toggle.disabled"));
             }
             return true;
         }
-        if (args.length == 1 && "reset".equalsIgnoreCase(args[0])) {
+        if (args.length == 1 && RESET_COMMAND.equalsIgnoreCase(args[0])) {
             playerConfig.set("reset", true);
             FileManager.saveTargetConfigFile(playerFile, playerConfig);
             PlayerManager.loadPlayerData(p, true);
             p.sendMessage(MessageManager.getPrefix() + MessageManager.getString("reset"));
             return true;
         }
-        if (args.length == 3 && "set".equalsIgnoreCase(args[0]) && "sound".equalsIgnoreCase(args[1])) {
+        if (args.length == 3 && SET_COMMAND.equalsIgnoreCase(args[0]) && SOUND_ARG.equalsIgnoreCase(args[1])) {
             String sound = Main.getInstance().checkSound(args[2]);
             
             if (sound == null) {
@@ -86,7 +91,7 @@ public class BasicCommand implements CommandExecutor {
             p.sendMessage(MessageManager.getPrefix() + MessageManager.getString("changed.self"));
             return true;
         }
-        if (args.length == 3 && "set".equalsIgnoreCase(args[0]) && "volume".equalsIgnoreCase(args[1])) {
+        if (args.length == 3 && SET_COMMAND.equalsIgnoreCase(args[0]) && VOLUME_ARG.equalsIgnoreCase(args[1])) {
             Double volume = Main.getInstance().checkVolume(args[2]);
             if (volume == null) {
                 sender.sendMessage(MessageManager.getPrefix() + MessageManager.getString("error.value_not_allowed"));
@@ -98,7 +103,7 @@ public class BasicCommand implements CommandExecutor {
             p.sendMessage(MessageManager.getPrefix() + MessageManager.getString("changed.self"));
             return true;
         }
-        if (args.length == 4 && "set".equalsIgnoreCase(args[0]) && "pitch".equalsIgnoreCase(args[1])) {
+        if (args.length == 4 && SET_COMMAND.equalsIgnoreCase(args[0]) && PITCH_ARG.equalsIgnoreCase(args[1])) {
             String pitch = Main.getInstance().checkPitch(args[3]);
             String slot = args[2];
             if (Integer.parseInt(slot) < 1 || Integer.parseInt(slot) > 9) {

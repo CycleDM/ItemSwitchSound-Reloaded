@@ -84,7 +84,8 @@ public class PlayerManager {
             playerConfig.set("sound", Main.getInstance().getConfig().getString("sound"));
             playerConfig.set("volume", Main.getInstance().getConfig().getDouble("volume"));
             int i = 0;
-            for (String s : Objects.requireNonNull(Main.getInstance().getConfig().getConfigurationSection("pitch")).getKeys(false)) {
+            for (String s : Objects.requireNonNull(Main.getInstance().getConfig().getConfigurationSection("pitch"))
+                    .getKeys(false)) {
                 String temp = Main.getInstance().getConfig().getString("pitch." + s);
                 playerConfig.set("pitch.slot" + i, temp);
                 i++;
@@ -131,7 +132,7 @@ public class PlayerManager {
             // 如果此时玩家在线，则立刻开始重载操作
             if (player.isOnline()) {
                 loadPlayerData(player.getPlayer(), false);
-            }// 否则，不进行任何操作即可（下一次登录时会自动重载）
+            } // 否则，不进行任何操作即可（下一次登录时会自动重载）
         }
     }
 }

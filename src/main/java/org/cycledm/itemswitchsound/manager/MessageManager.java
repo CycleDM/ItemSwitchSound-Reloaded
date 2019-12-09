@@ -46,13 +46,20 @@ public class MessageManager {
         if (Main.getInstance().getConfig().getBoolean("debug")) {
             Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () -> {
                 String debugPrefix = getString("debug.prefix") + " ";
-                Main.getInstance().getServer().getConsoleSender().sendMessage(getPrefix() + debugPrefix + getString("debug.title"));
-                Main.getInstance().getServer().getConsoleSender().sendMessage(getPrefix() + debugPrefix + ChatColor.RESET + "sound: " + Main.getInstance().getConfig().getString("sound"));
-                Main.getInstance().getServer().getConsoleSender().sendMessage(getPrefix() + debugPrefix + ChatColor.RESET + "volume: " + Main.getInstance().getConfig().getDouble("volume"));
-                Main.getInstance().getServer().getConsoleSender().sendMessage(getPrefix() + debugPrefix + ChatColor.RESET + "pitch: ");
-                for (String s : Objects.requireNonNull(Main.getInstance().getConfig().getConfigurationSection("pitch")).getKeys(false)) {
+                Main.getInstance().getServer().getConsoleSender()
+                        .sendMessage(getPrefix() + debugPrefix + getString("debug.title"));
+                Main.getInstance().getServer().getConsoleSender().sendMessage(getPrefix() + debugPrefix
+                        + ChatColor.RESET + "sound: " + Main.getInstance().getConfig().getString("sound"));
+                Main.getInstance().getServer().getConsoleSender().sendMessage(getPrefix() + debugPrefix
+                        + ChatColor.RESET + "volume: " + Main.getInstance().getConfig().getDouble("volume"));
+                Main.getInstance().getServer().getConsoleSender()
+                        .sendMessage(getPrefix() + debugPrefix + ChatColor.RESET + "pitch: ");
+                for (String s : Objects.requireNonNull(Main.getInstance().getConfig().getConfigurationSection("pitch"))
+                        .getKeys(false)) {
                     String pitchName = Main.getInstance().getConfig().getString("pitch." + s);
-                    Main.getInstance().getServer().getConsoleSender().sendMessage(getPrefix() + debugPrefix + ChatColor.RESET + "  " + s + ": " + pitchName + "(" + Main.pitchList.get(pitchName) + ")");
+                    Main.getInstance().getServer().getConsoleSender()
+                            .sendMessage(getPrefix() + debugPrefix + ChatColor.RESET + "  " + s + ": " + pitchName + "("
+                                    + Main.pitchList.get(pitchName) + ")");
                 }
             });
         }
@@ -66,17 +73,26 @@ public class MessageManager {
             Bukkit.getScheduler().runTask(Main.getInstance(), () -> {
                 player.sendMessage(getString("debug.prefix") + " " + getString("debug.title"));
                 player.sendMessage(getString("debug.alias.slot") + ": " + ChatColor.AQUA + slot);
-                player.sendMessage(getString("debug.alias.sound") + ": " + ChatColor.AQUA + PlayerManager.getSound(player));
-                player.sendMessage(getString("debug.alias.volume") + ": " + ChatColor.AQUA + PlayerManager.getVolume(player));
-                player.sendMessage(getString("debug.alias.pitch") + ": " + ChatColor.AQUA + PlayerManager.getPitchName(player, slot) + ChatColor.GREEN + " (" + PlayerManager.getPitch(player, slot) + ")");
+                player.sendMessage(
+                        getString("debug.alias.sound") + ": " + ChatColor.AQUA + PlayerManager.getSound(player));
+                player.sendMessage(
+                        getString("debug.alias.volume") + ": " + ChatColor.AQUA + PlayerManager.getVolume(player));
+                player.sendMessage(getString("debug.alias.pitch") + ": " + ChatColor.AQUA
+                        + PlayerManager.getPitchName(player, slot) + ChatColor.GREEN + " ("
+                        + PlayerManager.getPitch(player, slot) + ")");
             });
-        } else if (PlayerManager.sendInfo.get(player)) {
+        }
+        else if (PlayerManager.sendInfo.get(player)) {
             Bukkit.getScheduler().runTask(Main.getInstance(), () -> {
                 player.sendMessage(getString("debug.prefix") + " " + getString("debug.title"));
                 player.sendMessage(getString("debug.alias.slot") + ": " + ChatColor.AQUA + slot);
-                player.sendMessage(getString("debug.alias.sound") + ": " + ChatColor.AQUA + PlayerManager.getSound(player));
-                player.sendMessage(getString("debug.alias.volume") + ": " + ChatColor.AQUA + PlayerManager.getVolume(player));
-                player.sendMessage(getString("debug.alias.pitch") + ": " + ChatColor.AQUA + PlayerManager.getPitchName(player, slot) + ChatColor.GREEN + " (" + PlayerManager.getPitch(player, slot) + ")");
+                player.sendMessage(
+                        getString("debug.alias.sound") + ": " + ChatColor.AQUA + PlayerManager.getSound(player));
+                player.sendMessage(
+                        getString("debug.alias.volume") + ": " + ChatColor.AQUA + PlayerManager.getVolume(player));
+                player.sendMessage(getString("debug.alias.pitch") + ": " + ChatColor.AQUA
+                        + PlayerManager.getPitchName(player, slot) + ChatColor.GREEN + " ("
+                        + PlayerManager.getPitch(player, slot) + ")");
             });
         }
     }

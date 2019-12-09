@@ -12,35 +12,18 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
+import static org.cycledm.itemswitchsound.Main.*;
+
 /**
  * @author CycleDM
  */
 public class TableCompleter implements TabCompleter {
-    private String[] basicArg0 = {
-            // 基本指令
-            "toggle", "t",
-            "set",
-            "reset",
-            "info"
-    };
-    private String[] setArgs = {
-            // set下的分支
-            "sound",
-            "volume",
-            "pitch"
-    };
-    private String[] adminArg0 = {
-            // 管理员指令
-            "reload",
-            "debug",
-            "reset-all",
-            "set",
-            "confirm"
-    };
+    /** 引入所有指令字符串 */
+    private String[] basicCommands = {TOGGLE_COMMAND, TOGGLE_SHORT_COMMAND, SET_COMMAND, RESET_COMMAND, INFO_COMMAND};
+    private String[] setArgs = {SOUND_ARG, VOLUME_ARG, PITCH_ARG};
+    private String[] adminCommands = {RELOAD_COMMAND, DEBUG_COMMAND, RESET_ALL_COMMAND, SET_COMMAND, CONFIRM_COMMAND};
     
-    /**
-     * 根据输入的开头字符从指定的列表筛选，以对应字符串开头的值作为数组返回
-     */
+    /** 根据输入的开头字符从指定的列表筛选，以对应字符串开头的值作为数组返回 */
     private List<String> getAfterResult(String[] listGroup, String start) {
         String[] result = {};
         // 检查每一个字符，返回匹配值
@@ -59,55 +42,61 @@ public class TableCompleter implements TabCompleter {
         // 判断是否为玩家
         if (!(sender instanceof Player)) {
             list = new ArrayList<>();
-        } else if ("iss".equalsIgnoreCase(command.getName()) && sender.hasPermission(Objects.requireNonNull(command.getPermission()))) {
+        }
+        else if ("iss".equalsIgnoreCase(command.getName()) && sender.hasPermission(Objects.requireNonNull(command.getPermission()))) {
             list = basicList(args);
-        } else if ("issadmin".equalsIgnoreCase(command.getName()) && sender.hasPermission(Objects.requireNonNull(command.getPermission()))) {
+        }
+        else if ("issadmin".equalsIgnoreCase(command.getName()) && sender.hasPermission(Objects.requireNonNull(command.getPermission()))) {
             list = adminList(args);
-        } else {
+        }
+        else {
             list = new ArrayList<>();
         }
         return list;
     }
     
-    /**
-     * 基础指令补全
-     */
+    /** 基础指令补全 */
     private List<String> basicList(String[] args) {
         List<String> list;
         if (args.length == 1) {
             // 返回基本命令
-            list = getAfterResult(basicArg0, args[0]);
-        } else if (args.length == 2) {
+            list = getAfterResult(basicCommands, args[0]);
+        }
+        else if (args.length == 2) {
             // 返回set命令的子命令
             list = getAfterResult(setArgs, args[1]);
-        } else if (args.length == 3 && "set".equalsIgnoreCase(args[0]) && "sound".equalsIgnoreCase(args[1])) {
+        }
+        else if (args.length == 3 && SET_COMMAND.equalsIgnoreCase(args[0]) && SOUND_ARG.equalsIgnoreCase(args[1])) {
             // 返回声音列表
             list = getAfterResult(Main.soundList, args[2]);
-        } else if (args.length == 3 && "set".equalsIgnoreCase(args[0]) && "volume".equalsIgnoreCase(args[1])) {
+        }
+        else if (args.length == 3 && SET_COMMAND.equalsIgnoreCase(args[0]) && VOLUME_ARG.equalsIgnoreCase(args[1])) {
             // 返回可用的音量列表
-            list = getAfterResult(Main.volumeList, args[2]);
-        } else if (args.length == 3 && "set".equalsIgnoreCase(args[0]) && "pitch".equalsIgnoreCase(args[1]) && args[args.length - 1].length() < 1) {
+            list = getAfterResult(VOLUME_LIST, args[2]);
+        }
+        else if (args.length == 3 && SET_COMMAND.equalsIgnoreCase(args[0]) && PITCH_ARG.equalsIgnoreCase(args[1]) && args[args.length - 1].length() < 1) {
             // 返回物品栏数字
             list = Arrays.asList(getSlotList());
-        } else if (args.length == 4 && "set".equalsIgnoreCase(args[0]) && "pitch".equalsIgnoreCase(args[1])) {
+        }
+        else if (args.length == 4 && SET_COMMAND.equalsIgnoreCase(args[0]) && PITCH_ARG.equalsIgnoreCase(args[1])) {
             // 返回可用的音调名称列表
             list = getAfterResult(getPitchList(), args[3]);
-        } else {
+        }
+        else {
             // 返回空列表
             list = new ArrayList<>();
         }
         return list;
     }
     
-    /**
-     * 管理员指令补全
-     */
+    /** 管理员指令补全 */
     private List<String> adminList(String[] args) {
         List<String> list;
         // 如果已经输入了一个以上的字符，则返回空列表，soundList及玩家列表除外
         if (args.length == 1) {
-            list = getAfterResult(adminArg0, args[0]);
-        } else if (args.length == 2 && "set".equalsIgnoreCase(args[0])) {
+            list = getAfterResult(adminCommands, args[0]);
+        }
+        else if (args.length == 2 && "set".equalsIgnoreCase(args[0])) {
             // 返回在线玩家列表
             String[] temp = {};
             for (Player p : Bukkit.getOnlinePlayers()) {
@@ -117,22 +106,28 @@ public class TableCompleter implements TabCompleter {
                 }
             }
             list = getAfterResult(temp, args[1]);
-        } else if (args.length == 3 && "set".equalsIgnoreCase(args[0])) {
+        }
+        else if (args.length == 3 && SET_COMMAND.equalsIgnoreCase(args[0])) {
             // 返回set的子命令
             list = getAfterResult(setArgs, args[2]);
-        } else if (args.length == 4 && "set".equalsIgnoreCase(args[0]) && "sound".equalsIgnoreCase(args[2])) {
+        }
+        else if (args.length == 4 && SET_COMMAND.equalsIgnoreCase(args[0]) && SOUND_ARG.equalsIgnoreCase(args[2])) {
             // 返回可用声音列表
             list = getAfterResult(Main.soundList, args[3]);
-        } else if (args.length == 4 && "set".equalsIgnoreCase(args[0]) && "volume".equalsIgnoreCase(args[2])) {
+        }
+        else if (args.length == 4 && SET_COMMAND.equalsIgnoreCase(args[0]) && VOLUME_ARG.equalsIgnoreCase(args[2])) {
             // 返回可用音量列表
-            list = getAfterResult(Main.volumeList, args[3]);
-        } else if (args.length == 4 && "set".equalsIgnoreCase(args[0]) && "pitch".equalsIgnoreCase(args[2]) && args[args.length - 1].length() < 1) {
+            list = getAfterResult(VOLUME_LIST, args[3]);
+        }
+        else if (args.length == 4 && SET_COMMAND.equalsIgnoreCase(args[0]) && PITCH_ARG.equalsIgnoreCase(args[2]) && args[args.length - 1].length() < 1) {
             // 返回物品栏数字
             list = Arrays.asList(getSlotList());
-        } else if (args.length == 5 && "set".equalsIgnoreCase(args[0]) && "pitch".equalsIgnoreCase(args[2])) {
+        }
+        else if (args.length == 5 && SET_COMMAND.equalsIgnoreCase(args[0]) && PITCH_ARG.equalsIgnoreCase(args[2])) {
             // 返回可用音调名称列表
             list = getAfterResult(getPitchList(), args[4]);
-        } else {
+        }
+        else {
             list = new ArrayList<>();
         }
         return list;
