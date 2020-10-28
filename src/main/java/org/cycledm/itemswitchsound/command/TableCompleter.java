@@ -43,10 +43,10 @@ public class TableCompleter implements TabCompleter {
         if (!(sender instanceof Player)) {
             list = new ArrayList<>();
         }
-        else if ("iss".equalsIgnoreCase(command.getName()) && sender.hasPermission(Objects.requireNonNull(command.getPermission()))) {
+        else if (BASIC_COMMAND.equalsIgnoreCase(command.getName()) && sender.hasPermission(Objects.requireNonNull(command.getPermission()))) {
             list = basicList(args);
         }
-        else if ("issadmin".equalsIgnoreCase(command.getName()) && sender.hasPermission(Objects.requireNonNull(command.getPermission()))) {
+        else if (ADMIN_COMMAND.equalsIgnoreCase(command.getName()) && sender.hasPermission(Objects.requireNonNull(command.getPermission()))) {
             list = adminList(args);
         }
         else {

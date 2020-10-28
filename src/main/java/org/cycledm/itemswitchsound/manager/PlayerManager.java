@@ -19,9 +19,7 @@ import java.util.UUID;
 public class PlayerManager {
     public static File playerFolder = new File(Main.getInstance().getDataFolder(), File.separator + "player");
     
-    /**
-     * 用于存储玩家个人数据的哈希表
-     */
+    /** 用于存储玩家个人数据的哈希表 */
     public static Map<Player, String> toggle = new HashMap<>();
     
     public static String getToggle(Player player) {
@@ -62,9 +60,7 @@ public class PlayerManager {
         return new File(playerFolder + File.separator + uuid.toString() + ".yml");
     }
     
-    /**
-     * 加载指定玩家的数据
-     */
+    /** 加载指定玩家的数据 */
     public static void loadPlayerData(Player player, Boolean ignoreResetMessage) {
         File playerFile = getPlayerFile(player);
         FileConfiguration playerConfig = YamlConfiguration.loadConfiguration(playerFile);
@@ -97,26 +93,44 @@ public class PlayerManager {
         
         // 玩家配置文件已存在，加载玩家配置，写入哈希表
         if (getPlayerFile(player).exists()) {
-            toggle.put(player, playerConfig.getString("toggle"));
-            sound.put(player, playerConfig.getString("sound"));
-            volume.put(player, playerConfig.getDouble("volume"));
-            sendInfo.put(player, false);
-            int i = 0;
-            for (String s : Objects.requireNonNull(playerConfig.getConfigurationSection("pitch")).getKeys(false)) {
-                // 从pitch_list获得音调名
-                String temp = playerConfig.getString("pitch.slot" + i);
-                // 音调名存入对应哈希表
-                pitchName.put(player.getUniqueId().toString() + ":" + s, temp);
-                // 翻译成double类型数据后存到对应哈希表
-                pitch.put(player.getUniqueId().toString() + ":" + s, Main.pitchList.get(temp));
-                i++;
-            }
+            // 异步进行
+            Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () -> {
+                toggle.put(player, playerConfig.getString("toggle"));
+                sound.put(player, playerConfig.getString("sound"));
+                volume.put(player, playerConfig.getDouble("volume"));
+                sendInfo.put(player, false);
+                int i = 0;
+                for (String s : Objects.requireNonNull(playerConfig.getConfigurationSection("pitch")).getKeys(false)) {
+                    // 从pitch_list获得音调名
+                    String temp = playerConfig.getString("pitch.slot" + i);
+                    // 音调名存入对应哈希表
+                    pitchName.put(player.getUniqueId().toString() + ":" + s, temp);
+                    // 翻译成double类型数据后存到对应哈希表
+                    pitch.put(player.getUniqueId().toString() + ":" + s, Main.pitchList.get(temp));
+                    i++;
+                }
+            });
         }
     }
     
-    /**
-     * 重置所有玩家的数据
-     */
+    /** 清除玩家哈希表 */
+    public static void clearPlayerData(Player player) {
+        Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () -> {
+            toggle.remove(player);
+            sound.remove(player);
+            volume.remove(player);
+            sendInfo.remove(player);
+            // 遍历所有的键，筛选以玩家uuid开头的键
+            for (String s : pitchName.keySet()) {
+                if (s.startsWith(player.getUniqueId().toString())) {
+                    pitchName.remove(s);
+                    pitch.remove(s);
+                }
+            }
+        });
+    }
+    
+    /** 重置所有玩家的数据 */
     public static void resetAllPlayers() {
         // 为每一位玩家执行
         for (OfflinePlayer player : Bukkit.getOfflinePlayers()) {

@@ -6,6 +6,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.cycledm.itemswitchsound.Main;
 import org.cycledm.itemswitchsound.manager.MessageManager;
@@ -28,6 +29,14 @@ public class PlayerListener implements Listener {
                 PlayerManager.loadPlayerData(p, false);
             }
         }.runTaskLater(Main.getInstance(), delay);
+    }
+    
+    /** 退出事件 */
+    @EventHandler
+    public void onPlayerQuit(PlayerQuitEvent e) {
+        Player p = e.getPlayer();
+        // 清理哈希表
+        PlayerManager.clearPlayerData(p);
     }
     
     /** 切换物品事件（主要事件） */

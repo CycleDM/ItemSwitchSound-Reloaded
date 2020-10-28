@@ -35,6 +35,9 @@ public class AdminCommand implements CommandExecutor {
     private Map<CommandSender, Boolean> isConfirmAllowed = new HashMap<>();
     private Map<CommandSender, Integer> confirmTaskId = new HashMap<>();
     
+    /** confirm倒计时，单位为秒 */
+    private static Integer CONFIRM_TIME = 15;
+    
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         // 初始化哈希表
@@ -63,8 +66,7 @@ public class AdminCommand implements CommandExecutor {
             
             // 确认操作倒计时任务
             int taskid = new BukkitRunnable() {
-                
-                int time = 15;
+                int time = CONFIRM_TIME;
                 
                 @Override
                 public void run() {
@@ -88,7 +90,7 @@ public class AdminCommand implements CommandExecutor {
                 sender.sendMessage(MessageManager.getPrefix() + MessageManager.getString("reset-all.complete"));
                 // 取消计时器，并重置哈希表
                 Bukkit.getScheduler().cancelTask(confirmTaskId.get(sender));
-                confirmTaskId.putIfAbsent(sender, null);
+                confirmTaskId.remove(sender);
                 isConfirmAllowed.put(sender, false);
                 return true;
             }
